@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Container, AppBar, Typography, Grow, Grid } from '@mui/material';
-import { ThemeProvider } from '@mui/material/styles';
+
+import { getMemories } from './actions/memories';
 import memories from './images/memories.jpeg';
 import Memories from './components/Memories/Memories';
 import Form from './components/Form/Form';
@@ -8,8 +10,13 @@ import useStyles from './styles';
 
 const test = {};
 const App = () => {
+  const [currentId, setCurrentId] = useState(null);
   const classes = useStyles();
-  console.log('classes: ', classes);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getMemories());
+  }, [currentId, dispatch]);
   return (
     // <ThemeProvider theme={test}>
     <Container maxwidth='lg'>
@@ -34,10 +41,10 @@ const App = () => {
             spacing={3}
           >
             <Grid item xs={12} sm={7}>
-              <Memories />
+              <Memories setCurrentId={setCurrentId} />
             </Grid>
             <Grid item xs={12} sm={4}>
-              <Form />
+              <Form currentId={currentId} setCurrentId={setCurrentId} />
             </Grid>
           </Grid>
         </Container>

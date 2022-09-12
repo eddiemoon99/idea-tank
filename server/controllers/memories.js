@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import MemoryMessage from '../models/memoryMessage.js';
 
 export const getMemories = async (req, res) => {
@@ -24,4 +25,46 @@ export const createMemory = async (req, res) => {
   } catch (error) {
     res.status(409).json({ message: error.message });
   }
+};
+
+export const updateMemory = async (req, res) => {
+  const { id: _id } = req.params;
+  const memory = req.body;
+
+  if (!mongoose.Types.ObjectId.isValid(_id))
+    return res.status(404).send('No memory with the id exists');
+
+  const updatedMemory = await MemoryMessage.findByIdAndUpdate(_id, memory, {
+    new: true,
+  });
+
+  res.json(updatedMemory);
+};
+
+export const deleteMemory = async (req, res) => {
+  const { id: _id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(_id))
+    return res.status(404).send('No memory with the id exists');
+
+  await MemoryMessage.findByIdAndRemove(_id);
+
+  res.json({ message: 'Memory deleted successfully' });
+};
+
+export const likeMemory = async (req, res) => {
+  const { id: _id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(_id))
+    return res.status(404).send('No memory with the id exists');
+
+  const memory = await MemoryMessage.findById(_id);
+
+  const updatedMemory = await MemoryMessage.findByIdAndUpdate(
+    _id,
+    { likeCount: memory.likeCount + 1 },
+    { new: true }
+  );
+
+  res.json(updatedMemory);
 };

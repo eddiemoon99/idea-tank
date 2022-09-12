@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const memorySchema = mongoose.Schema({
   title: String,
-  message: String,
+  description: String,
   creator: String,
   tags: [String],
   selectedFile: String,
