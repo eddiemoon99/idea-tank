@@ -2,34 +2,34 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Container, AppBar, Typography, Grow, Grid } from '@mui/material';
 
-import { getMemories } from './actions/memories';
-import memories from './images/memories.jpeg';
-import Memories from './components/Memories/Memories';
+import { getIdeas } from './actions/ideas';
+import lightbulb from './images/lightbulb.svg';
+import Ideas from './components/Ideas/Ideas';
 import Form from './components/Form/Form';
 import useStyles from './styles';
 
-const test = {};
 const App = () => {
   const [currentId, setCurrentId] = useState(null);
+
   const classes = useStyles();
   const dispatch = useDispatch();
 
+  // get ideas when dispatched or the selected id changes
   useEffect(() => {
-    dispatch(getMemories());
+    dispatch(getIdeas());
   }, [currentId, dispatch]);
   return (
-    // <ThemeProvider theme={test}>
     <Container maxwidth='lg'>
-      <AppBar className={classes.appBar} position='static' color='inherit'>
+      <AppBar className={classes.appHeader} position='static'>
         <img
           className={classes.image}
-          src={memories}
-          alt='memories'
-          height='150'
-          width='300'
+          src={lightbulb}
+          alt='light bulb'
+          height='auto'
+          width='20%'
         />
-        <Typography className={classes.heading} variant='h2' align='center'>
-          Memory House
+        <Typography className={classes.title} variant='h2' align='center'>
+          Idea Tank
         </Typography>
       </AppBar>
       <Grow in>
@@ -40,17 +40,16 @@ const App = () => {
             alignItems='stretch'
             spacing={3}
           >
-            <Grid item xs={12} sm={7}>
-              <Memories setCurrentId={setCurrentId} />
-            </Grid>
-            <Grid item xs={12} sm={4}>
+            <Grid sx={{ marginRight: '50px !important' }} item xs={12} sm={4}>
               <Form currentId={currentId} setCurrentId={setCurrentId} />
+            </Grid>
+            <Grid item xs={12} sm={7}>
+              <Ideas setCurrentId={setCurrentId} />
             </Grid>
           </Grid>
         </Container>
       </Grow>
     </Container>
-    // </ThemeProvider>
   );
 };
 

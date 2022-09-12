@@ -1,12 +1,12 @@
 import mongoose from 'mongoose';
 
-const memorySchema = mongoose.Schema({
+const ideaSchema = mongoose.Schema({
   title: String,
   description: String,
   creator: String,
   tags: [String],
   selectedFile: String,
-  likeCount: {
+  upvoteCount: {
     type: Number,
     default: 0,
   },
@@ -16,6 +16,6 @@ const memorySchema = mongoose.Schema({
   },
 });
 
-const MemoryMessage = mongoose.model('MemoryMessage', memorySchema);
+const Idea = mongoose.model('Idea', ideaSchema);
 
-export default MemoryMessage;
+export default Idea;

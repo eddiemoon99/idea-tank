@@ -2,15 +2,16 @@ import React from 'react';
 import { Grid, CircularProgress } from '@mui/material';
 import { useSelector } from 'react-redux';
 
-import Memory from './Memory/Memory';
+import Idea from './Idea/Idea';
 import useStyles from './styles';
 
-const Memories = ({ setCurrentId }) => {
+const Ideas = ({ setCurrentId }) => {
   const classes = useStyles();
-  const memories = useSelector((state) => state.memories);
 
-  console.log(memories);
-  return !memories.length ? (
+  // get ideas
+  const ideas = useSelector((state) => state.ideas);
+
+  return !ideas.length ? (
     <CircularProgress />
   ) : (
     <Grid
@@ -19,13 +20,13 @@ const Memories = ({ setCurrentId }) => {
       alignItems='stretch'
       spacing={3}
     >
-      {memories.map((memory) => (
-        <Grid key={memory._id} item xs={12} sm={6}>
-          <Memory memory={memory} setCurrentId={setCurrentId} />
+      {ideas.map((idea) => (
+        <Grid key={idea._id} item xs={12} sm={6}>
+          <Idea idea={idea} setCurrentId={setCurrentId} />
         </Grid>
       ))}
     </Grid>
   );
 };
 
-export default Memories;
+export default Ideas;

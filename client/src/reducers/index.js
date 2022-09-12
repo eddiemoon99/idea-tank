@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 
-import memories from './memories';
+import ideas from './ideas';
 
 export default combineReducers({
-  memories,
+  ideas,
 });

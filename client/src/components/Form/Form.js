@@ -3,10 +3,10 @@ import { TextField, Button, Typography, Paper } from '@mui/material';
 import FileBase from 'react-file-base64';
 import useStyles from './styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { createMemory, updateMemory } from '../../actions/memories';
+import { createIdea, updateIdea } from '../../actions/ideas';
 
 const Form = ({ currentId, setCurrentId }) => {
-  const [memoryData, setMemoryData] = useState({
+  const [ideaData, setIdeaData] = useState({
     creator: '',
     title: '',
     description: '',
@@ -14,33 +14,37 @@ const Form = ({ currentId, setCurrentId }) => {
     selectedFile: '',
   });
 
-  const memory = useSelector((state) =>
-    currentId ? state.memories.find((m) => m._id === currentId) : null
+  // get current selected idea if there is one
+  const idea = useSelector((state) =>
+    currentId ? state.ideas.find((m) => m._id === currentId) : null
   );
 
   const classes = useStyles();
 
   const dispatch = useDispatch();
 
+  // set form with current idea if exists
   useEffect(() => {
-    if (memory) setMemoryData(memory);
-  }, [memory]);
+    if (idea) setIdeaData(idea);
+  }, [idea]);
 
+  // handle submit function
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (currentId) {
-      dispatch(updateMemory(currentId, memoryData));
+      dispatch(updateIdea(currentId, ideaData));
     } else {
-      dispatch(createMemory(memoryData));
+      dispatch(createIdea(ideaData));
     }
 
     clearForm();
   };
 
+  // handle clearing form
   const clearForm = () => {
     setCurrentId(null);
-    setMemoryData({
+    setIdeaData({
       creator: '',
       title: '',
       description: '',
@@ -57,55 +61,73 @@ const Form = ({ currentId, setCurrentId }) => {
         className={`${classes.root} ${classes.form}`}
         onSubmit={handleSubmit}
       >
-        <Typography var='h6'>
-          {currentId ? 'Edit' : 'Store'} Your Memory
+        <Typography var='h6' color='white'>
+          {currentId ? 'Edit' : 'Store'} Your Idea!
         </Typography>
         <TextField
           name='creator'
-          variant='outlined'
+          variant='filled'
           label='Creator'
-          fullWidth
-          value={memoryData.creator}
+          sx={{
+            input: {
+              color: '#FFF !important',
+            },
+          }}
+          value={ideaData.creator}
           onChange={(e) =>
-            setMemoryData({ ...memoryData, creator: e.target.value })
+            setIdeaData({ ...ideaData, creator: e.target.value })
           }
         />
         <TextField
           name='title'
-          variant='outlined'
+          variant='filled'
           label='Title'
+          sx={{
+            input: {
+              color: '#FFF !important',
+            },
+          }}
           fullWidth
-          value={memoryData.title}
-          onChange={(e) =>
-            setMemoryData({ ...memoryData, title: e.target.value })
-          }
+          value={ideaData.title}
+          onChange={(e) => setIdeaData({ ...ideaData, title: e.target.value })}
         />
         <TextField
           name='description'
-          variant='outlined'
+          variant='filled'
           label='Description'
+          sx={{
+            input: {
+              color: '#FFF !important',
+            },
+          }}
           fullWidth
-          value={memoryData.description}
+          value={ideaData.description}
           onChange={(e) =>
-            setMemoryData({ ...memoryData, description: e.target.value })
+            setIdeaData({ ...ideaData, description: e.target.value })
           }
         />
         <TextField
-          name='Tags'
-          variant='outlined'
+          name='tags'
+          variant='filled'
           label='Tags'
+          sx={{
+            input: {
+              color: '#FFF !important',
+            },
+          }}
           fullWidth
-          value={memoryData.tags}
+          value={ideaData.tags}
           onChange={(e) =>
-            setMemoryData({ ...memoryData, tags: e.target.value })
+            setIdeaData({ ...ideaData, tags: e.target.value.split(',') })
           }
         />
         <div className={classes.fileInput}>
+          Select an image
           <FileBase
             type='file'
             multiple={false}
             onDone={({ base64 }) =>
-              setMemoryData({ ...memoryData, selectedFile: base64 })
+              setIdeaData({ ...ideaData, selectedFile: base64 })
             }
           />
         </div>
@@ -117,7 +139,7 @@ const Form = ({ currentId, setCurrentId }) => {
           type='submit'
           fullWidth
         >
-          Submit
+          Store
         </Button>
         <Button
           variant='contained'
@@ -126,7 +148,7 @@ const Form = ({ currentId, setCurrentId }) => {
           onClick={clearForm}
           fullWidth
         >
-          Clear
+          Cancel
         </Button>
       </form>
     </Paper>

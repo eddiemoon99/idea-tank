@@ -2,26 +2,27 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import cors from 'cors';
-import router from './routes/memories.js';
+import router from './routes/ideas.js';
+import dotenv from 'dotenv';
 
+// create server
 const app = express();
 
+// env var
+dotenv.config();
+
+// setup body parser for requests
 app.use(bodyParser.json({ limit: '30mb', extended: true }));
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
 app.use(cors());
 
-app.use('/memories', router);
-// MongoDB Atlas
+app.use('/ideas', router);
 
-const CONNECTION_URL =
-  'mongodb+srv://eddiemoon:DB-b6HVfG6UnyyL@cluster0.yofer49.mongodb.net/?retryWrites=true&w=majority';
-const PORT = 5000;
+const PORT = process.env.PORT;
 
 // connect mongoose
-
-console.log(CONNECTION_URL);
 mongoose
-  .connect(CONNECTION_URL, {
+  .connect(process.env.CONNECTION_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -29,6 +30,3 @@ mongoose
     app.listen(PORT, () => console.log(`Server running on Port: ${PORT}`))
   )
   .catch((error) => console.log(error.message));
-
-// deprecated function
-// mongoose.set('useFindAndModify', false);

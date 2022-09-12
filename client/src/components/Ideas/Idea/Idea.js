@@ -8,46 +8,47 @@ import {
   Typography,
 } from '@mui/material';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
+import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 import DeleteIcon from '@mui/icons-material/Delete';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import moment from 'moment';
 import { useDispatch } from 'react-redux';
 
 import useStyles from './styles';
-import { deleteMemory, likeMemory } from '../../../actions/memories';
+import { deleteIdea, upvoteIdea, downvoteIdea } from '../../../actions/ideas';
 
-const Memory = ({ memory, setCurrentId }) => {
+const Idea = ({ idea, setCurrentId }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   return (
     <Card className={classes.card}>
       <CardMedia
         className={classes.media}
-        image={memory.selectedFile}
-        title={memory.title}
+        image={idea.selectedFile}
+        title={idea.title}
       />
       <div className={classes.overlay}>
-        <Typography variant='h6'>{memory.creator}</Typography>
+        <Typography variant='h6'>{idea.creator}</Typography>
         <Typography variant='body2'>
-          {moment(memory.createdAt).fromNow()}
+          {moment(idea.createdAt).fromNow()}
         </Typography>
       </div>
       <div className={classes.overlay2}>
         <Button
           style={{ color: 'white' }}
           size='small'
-          onClick={() => setCurrentId(memory._id)}
+          onClick={() => setCurrentId(idea._id)}
         >
           <MoreHorizIcon fontSize='default' />
         </Button>
       </div>
       <div className={classes.details}>
         <Typography variant='body2' color='textSecondary'>
-          {memory.tags.map((tag) => `#${tag} `)}
+          {idea.tags.map((tag) => `#${tag} `)}
         </Typography>
       </div>
       <Typography className={classes.title} variant='h5' gutterBottom>
-        {memory.title}
+        {idea.title}
       </Typography>
       <CardContent>
         <Typography
@@ -56,24 +57,33 @@ const Memory = ({ memory, setCurrentId }) => {
           component='p'
           gutterBottom
         >
-          {memory.description}
+          {idea.description}
         </Typography>
       </CardContent>
       <CardActions className={classes.cardActions}>
+        <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+          <Button
+            size='small'
+            color='primary'
+            onClick={() => dispatch(upvoteIdea(idea._id))}
+          >
+            <ThumbUpAltIcon fontSize='small' />
+          </Button>
+          <Typography color='#1976d2'>{idea.upvoteCount}</Typography>
+          <Button
+            size='small'
+            color='primary'
+            onClick={() => dispatch(downvoteIdea(idea._id))}
+          >
+            <ThumbDownAltIcon fontSize='small' />
+          </Button>
+        </div>
         <Button
           size='small'
           color='primary'
-          onClick={() => dispatch(likeMemory(memory._id))}
+          onClick={() => dispatch(deleteIdea(idea._id))}
         >
-          <ThumbUpAltIcon fontSize='small' />
-          Like {memory.likeCount}
-        </Button>
-        <Button
-          size='small'
-          color='primary'
-          onClick={() => dispatch(deleteMemory(memory._id))}
-        >
-          <ThumbUpAltIcon fontSize='small' />
+          <DeleteIcon fontSize='small' />
           Delete
         </Button>
       </CardActions>
@@ -81,4 +91,4 @@ const Memory = ({ memory, setCurrentId }) => {
   );
 };
 
-export default Memory;
+export default Idea;
