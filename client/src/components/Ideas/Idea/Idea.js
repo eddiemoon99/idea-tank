@@ -28,7 +28,7 @@ const Idea = ({ idea, setCurrentId }) => {
         title={idea.title}
       />
       <div className={classes.overlay}>
-        <Typography variant='h6'>{idea.creator}</Typography>
+        <Typography variant='h6'>{idea.inventor}</Typography>
         <Typography variant='body2'>
           {moment(idea.createdAt).fromNow()}
         </Typography>
@@ -53,8 +53,8 @@ const Idea = ({ idea, setCurrentId }) => {
       <CardContent>
         <Typography
           variant='body2'
-          color='textSecondary'
-          component='p'
+          color='textPrimary'
+          component='i'
           gutterBottom
         >
           {idea.description}

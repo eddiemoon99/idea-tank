@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, CircularProgress } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 
 import Idea from './Idea/Idea';
@@ -12,7 +12,9 @@ const Ideas = ({ setCurrentId }) => {
   const ideas = useSelector((state) => state.ideas);
 
   return !ideas.length ? (
-    <CircularProgress />
+    <Typography variant='h4' className={classes.empty} color='white'>
+      No ideas in the tank yet...
+    </Typography>
   ) : (
     <Grid
       className={classes.container}

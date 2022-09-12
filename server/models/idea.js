@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const ideaSchema = mongoose.Schema({
   title: String,
   description: String,
-  creator: String,
+  inventor: String,
   tags: [String],
   selectedFile: String,
   upvoteCount: {

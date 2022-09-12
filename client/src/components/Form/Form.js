@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Button, Typography, Paper } from '@mui/material';
+import {
+  TextField,
+  Button,
+  ButtonGroup,
+  Typography,
+  Paper,
+} from '@mui/material';
 import FileBase from 'react-file-base64';
 import useStyles from './styles';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,7 +13,7 @@ import { createIdea, updateIdea } from '../../actions/ideas';
 
 const Form = ({ currentId, setCurrentId }) => {
   const [ideaData, setIdeaData] = useState({
-    creator: '',
+    inventor: '',
     title: '',
     description: '',
     tags: '',
@@ -45,7 +51,7 @@ const Form = ({ currentId, setCurrentId }) => {
   const clearForm = () => {
     setCurrentId(null);
     setIdeaData({
-      creator: '',
+      inventor: '',
       title: '',
       description: '',
       tags: '',
@@ -61,21 +67,21 @@ const Form = ({ currentId, setCurrentId }) => {
         className={`${classes.root} ${classes.form}`}
         onSubmit={handleSubmit}
       >
-        <Typography var='h6' color='white'>
-          {currentId ? 'Edit' : 'Store'} Your Idea!
+        <Typography var='h6' color='#FEFAE0'>
+          {currentId ? 'Change Your Idea!' : 'Store A New Idea!'}
         </Typography>
         <TextField
-          name='creator'
+          name='inventor'
           variant='filled'
-          label='Creator'
+          label='Inventor'
           sx={{
             input: {
-              color: '#FFF !important',
+              color: '#E3D5CA !important',
             },
           }}
-          value={ideaData.creator}
+          value={ideaData.inventor}
           onChange={(e) =>
-            setIdeaData({ ...ideaData, creator: e.target.value })
+            setIdeaData({ ...ideaData, inventor: e.target.value })
           }
         />
         <TextField
@@ -84,7 +90,7 @@ const Form = ({ currentId, setCurrentId }) => {
           label='Title'
           sx={{
             input: {
-              color: '#FFF !important',
+              color: '#E3D5CA !important',
             },
           }}
           fullWidth
@@ -97,7 +103,7 @@ const Form = ({ currentId, setCurrentId }) => {
           label='Description'
           sx={{
             input: {
-              color: '#FFF !important',
+              color: '#E3D5CA !important',
             },
           }}
           fullWidth
@@ -112,7 +118,7 @@ const Form = ({ currentId, setCurrentId }) => {
           label='Tags'
           sx={{
             input: {
-              color: '#FFF !important',
+              color: '#E3D5CA !important',
             },
           }}
           fullWidth
@@ -131,25 +137,19 @@ const Form = ({ currentId, setCurrentId }) => {
             }
           />
         </div>
-        <Button
-          className={classes.buttonSubmit}
-          variant='contained'
-          color='primary'
-          size='large'
-          type='submit'
-          fullWidth
-        >
-          Store
-        </Button>
-        <Button
-          variant='contained'
-          color='secondary'
-          size='small'
-          onClick={clearForm}
-          fullWidth
-        >
-          Cancel
-        </Button>
+        <ButtonGroup className={classes.buttonGroup}>
+          <Button variant='contained' color='secondary' onClick={clearForm}>
+            Cancel
+          </Button>
+          <Button
+            className={classes.buttonSubmit}
+            variant='contained'
+            color='primary'
+            type='submit'
+          >
+            Store
+          </Button>
+        </ButtonGroup>
       </form>
     </Paper>
   );
