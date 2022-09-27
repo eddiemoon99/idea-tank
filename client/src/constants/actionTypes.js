@@ -6,4 +6,6 @@ export default {
   fetchAll: 'FETCH_ALL',
   upvote: 'UPVOTE',
   downvote: 'DOWNVOTE',
+  auth: 'AUTH',
+  logout: 'LOGOUT',
 };

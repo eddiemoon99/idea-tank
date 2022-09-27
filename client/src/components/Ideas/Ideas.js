@@ -6,10 +6,9 @@ import Idea from './Idea/Idea';
 import useStyles from './styles';
 
 const Ideas = ({ setCurrentId }) => {
-  const classes = useStyles();
-
   // get ideas
   const ideas = useSelector((state) => state.ideas);
+  const classes = useStyles();
 
   return !ideas.length ? (
     <Typography variant='h4' className={classes.empty} color='white'>

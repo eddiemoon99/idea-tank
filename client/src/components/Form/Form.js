@@ -67,7 +67,7 @@ const Form = ({ currentId, setCurrentId }) => {
         className={`${classes.root} ${classes.form}`}
         onSubmit={handleSubmit}
       >
-        <Typography var='h6' color='#FEFAE0'>
+        <Typography var='h6' color='#4B3542'>
           {currentId ? 'Change Your Idea!' : 'Store A New Idea!'}
         </Typography>
         <TextField
@@ -76,7 +76,7 @@ const Form = ({ currentId, setCurrentId }) => {
           label='Inventor'
           sx={{
             input: {
-              color: '#E3D5CA !important',
+              color: '#4B3542 !important',
             },
           }}
           value={ideaData.inventor}
@@ -90,7 +90,7 @@ const Form = ({ currentId, setCurrentId }) => {
           label='Title'
           sx={{
             input: {
-              color: '#E3D5CA !important',
+              color: '#4B3542 !important',
             },
           }}
           fullWidth
@@ -103,7 +103,7 @@ const Form = ({ currentId, setCurrentId }) => {
           label='Description'
           sx={{
             input: {
-              color: '#E3D5CA !important',
+              color: '#4B3542 !important',
             },
           }}
           fullWidth
