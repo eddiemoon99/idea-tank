@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Avatar, AppBar, Typography, Button } from '@mui/material';
 import { useDispatch } from 'react-redux';
+import decode from 'jwt-decode';
 
 import useStyles from './styles';
 import lightbulb from '../../images/lightbulb.svg';
@@ -17,14 +18,20 @@ const Nav = () => {
   useEffect(() => {
     const token = user?.token;
 
-    // JWT
+    if (token) {
+      const decodedToken = decode(token);
+
+      if (decodedToken.exp * 1000 < new Date().getTime()) {
+        handleLogout();
+      }
+    }
 
     setUser(JSON.parse(localStorage.getItem('profile')));
   }, [location]);
 
   const handleLogout = () => {
     dispatch({ type: 'LOGOUT' });
-    navigate('/');
+    navigate('/auth');
     setUser(null);
   };
   return (
@@ -52,16 +59,17 @@ const Nav = () => {
           >
             <Avatar
               sx={{ height: 25, width: 25 }}
-              alt={user.result.given_name}
+              alt={user?.result?.given_name || user?.result?.firstName}
               src={user.result.picture}
             >
-              {user.result.given_name.charAt(0)}
+              {user?.result?.given_name
+                ? user?.result?.given_name.charAt(0)
+                : user?.result?.firstName.charAt(0)}
             </Avatar>
             <Button
               onClick={handleLogout}
-              sx={{ height: 25 }}
+              sx={{ height: 25, backgroundColor: '#25131F' }}
               variant='contained'
-              color='secondary'
             >
               Log out
             </Button>
@@ -71,7 +79,9 @@ const Nav = () => {
             component={Link}
             to='/auth'
             variant='contained'
-            color='primary'
+            sx={{
+              backgroundColor: '#854F71',
+            }}
           >
             Sign In
           </Button>

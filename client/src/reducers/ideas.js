@@ -1,7 +1,7 @@
 import actionTypes from '../constants/actionTypes';
 
 // return depending on which action
-export default (ideas = [], action) => {
+const ideasReducers = (ideas = [], action) => {
   switch (action.type) {
     case actionTypes.delete:
       return ideas.filter((idea) => idea._id !== action.payload);
@@ -19,3 +19,5 @@ export default (ideas = [], action) => {
       return ideas;
   }
 };
+
+export default ideasReducers;

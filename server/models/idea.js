@@ -4,6 +4,7 @@ const ideaSchema = mongoose.Schema({
   title: String,
   description: String,
   inventor: String,
+  name: String,
   tags: [String],
   selectedFile: String,
   upvotes: {

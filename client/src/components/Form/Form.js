@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import {
   TextField,
   Button,
@@ -7,24 +8,28 @@ import {
   Paper,
 } from '@mui/material';
 import FileBase from 'react-file-base64';
+
 import useStyles from './styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { createIdea, updateIdea } from '../../actions/ideas';
-
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import EjectIcon from '@mui/icons-material/Eject';
 const Form = ({ currentId, setCurrentId }) => {
   const [ideaData, setIdeaData] = useState({
-    inventor: '',
     title: '',
     description: '',
     tags: '',
     selectedFile: '',
   });
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+  const [show, setShow] = useState(false);
 
   // get current selected idea if there is one
   const idea = useSelector((state) =>
     currentId ? state.ideas.find((m) => m._id === currentId) : null
   );
 
+  const location = useLocation();
   const classes = useStyles();
 
   const dispatch = useDispatch();
@@ -34,14 +39,34 @@ const Form = ({ currentId, setCurrentId }) => {
     if (idea) setIdeaData(idea);
   }, [idea]);
 
+  useEffect(() => {
+    setUser(JSON.parse(localStorage.getItem('profile')));
+  }, [location]);
+
   // handle submit function
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (currentId) {
-      dispatch(updateIdea(currentId, ideaData));
+    let name;
+    if (user?.result?.firstName) {
+      name = `${user?.result?.firstName} ${user?.result?.lastName}`;
     } else {
-      dispatch(createIdea(ideaData));
+      name = user?.result?.name;
+    }
+    if (currentId) {
+      dispatch(
+        updateIdea(currentId, {
+          ...ideaData,
+          name,
+        })
+      );
+    } else {
+      dispatch(
+        createIdea({
+          ...ideaData,
+          name,
+        })
+      );
     }
 
     clearForm();
@@ -51,7 +76,6 @@ const Form = ({ currentId, setCurrentId }) => {
   const clearForm = () => {
     setCurrentId(null);
     setIdeaData({
-      inventor: '',
       title: '',
       description: '',
       tags: '',
@@ -59,31 +83,43 @@ const Form = ({ currentId, setCurrentId }) => {
     });
   };
 
-  return (
+  if (!user) {
+    return (
+      <Paper className={classes.paper}>
+        <Typography variant='h6' align='center'>
+          Please sign in to store ideas.
+        </Typography>
+      </Paper>
+    );
+  }
+  return show ? (
     <Paper className={classes.paper}>
       <form
         autoComplete='off'
         noValidate
         className={`${classes.root} ${classes.form}`}
         onSubmit={handleSubmit}
+        style={{ position: 'relative' }}
       >
-        <Typography var='h6' color='#4B3542'>
-          {currentId ? 'Change Your Idea!' : 'Store A New Idea!'}
-        </Typography>
-        <TextField
-          name='inventor'
-          variant='filled'
-          label='Inventor'
-          sx={{
-            input: {
-              color: '#4B3542 !important',
-            },
+        <div
+          style={{
+            width: '100%',
+            display: 'flex',
           }}
-          value={ideaData.inventor}
-          onChange={(e) =>
-            setIdeaData({ ...ideaData, inventor: e.target.value })
-          }
-        />
+        >
+          <Button
+            sx={{
+              color: '#4B3542',
+              marginRight: '4rem',
+            }}
+            onClick={() => setShow(false)}
+          >
+            <EjectIcon />
+          </Button>
+          <Typography var='h6' color='#4B3542' sx={{ lineHeight: '2.2' }}>
+            {currentId ? 'Change Your Idea!' : 'Store A New Idea!'}
+          </Typography>
+        </div>
         <TextField
           name='title'
           variant='filled'
@@ -118,7 +154,7 @@ const Form = ({ currentId, setCurrentId }) => {
           label='Tags'
           sx={{
             input: {
-              color: '#E3D5CA !important',
+              color: '#4B3542 !important',
             },
           }}
           fullWidth
@@ -151,6 +187,25 @@ const Form = ({ currentId, setCurrentId }) => {
           </Button>
         </ButtonGroup>
       </form>
+    </Paper>
+  ) : (
+    <Paper
+      className={classes.hiddenPaper}
+      onClick={() => {
+        setShow(true);
+      }}
+    >
+      <Button sx={{ color: '#4B3542' }}>
+        <AddCircleIcon />
+      </Button>
+      <Typography
+        sx={{ lineHeight: '2' }}
+        variant='h6'
+        align='center'
+        color='#4B3542'
+      >
+        Store A New Idea!
+      </Typography>
     </Paper>
   );
 };

@@ -8,12 +8,10 @@ import {
   Container,
 } from '@mui/material';
 import jwt_decode from 'jwt-decode';
-import { useGoogleLogin } from '@react-oauth/google';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { GoogleLogin } from '@react-oauth/google';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-
-import googleIcon from '../../images/googleIcon.svg';
 import Input from './Input';
 import useStyles from './styles';
 import { signIn, signUp } from '../../actions/auth';
@@ -36,7 +34,6 @@ const Auth = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('form Data: ', inputs);
 
     if (isSignUp) {
       dispatch(signUp(inputs, navigate));
@@ -57,10 +54,11 @@ const Auth = () => {
   };
 
   const googleSuccess = async (res) => {
-    const result = jwt_decode(res?.credential);
+    let result;
+    if (res?.credential) {
+      result = jwt_decode(res?.credential);
+    }
     const token = res?.credential;
-    console.log('result: ', result);
-
     try {
       dispatch({ type: 'AUTH', data: { result, token } });
       navigate('/');
@@ -72,11 +70,6 @@ const Auth = () => {
   const googleError = (error) => {
     console.log(error);
   };
-
-  const login = useGoogleLogin({
-    onSuccess: googleSuccess,
-    onError: googleError,
-  });
 
   return (
     <Container component='main' maxWidth='xs'>
@@ -144,25 +137,13 @@ const Auth = () => {
               width: '100%',
             }}
           >
-            <Button
-              variant='contained'
-              sx={{
-                backgroundColor: '#8D99AE',
-                fontSize: 12,
-                color: 'white',
-              }}
-              onClick={() => login()}
-              fullWidth
-            >
-              <img
-                src={googleIcon}
-                alt='google icon'
-                height='auto'
-                width='10%'
-                style={{ marginRight: 5 }}
-              />
-              Google
-            </Button>
+            <GoogleLogin
+              type='standard'
+              theme='filled_blue'
+              size='medium'
+              onSuccess={googleSuccess}
+              onError={googleError}
+            />
           </Grid>
           <Grid container sx={{ justifyContent: 'flex-end' }}>
             <Grid item>

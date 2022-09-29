@@ -1,4 +1,4 @@
-import bcrpyt from 'bcryptjs';
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 
@@ -17,7 +17,7 @@ export const signIn = async (req, res) => {
     }
 
     // check password
-    const checkPassword = await bcrpyt.compare(password, existingUser.password);
+    const checkPassword = await bcrypt.compare(password, existingUser.password);
 
     // if password does not match =
     if (!checkPassword) {
@@ -27,7 +27,7 @@ export const signIn = async (req, res) => {
     // create web token for user
     const token = jwt.sign(
       { email: existingUser.email, id: existingUser._id },
-      'secret',
+      process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
 
@@ -57,9 +57,8 @@ export const signUp = async (req, res) => {
     }
 
     // create hashed password
-    const hashedPassword = await brcypt.hash(password, 12);
+    const hashedPassword = await bcrypt.hash(password, 12);
 
-    // create user
     const result = await User.create({
       email,
       password: hashedPassword,
@@ -68,11 +67,15 @@ export const signUp = async (req, res) => {
     });
 
     // create web token
-    const token = jwt.sign({ email: result.email, id: result._id }, 'secret', {
-      expiresIn: '1h',
-    });
+    const token = jwt.sign(
+      { email: result.email, id: result._id },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: '1h',
+      }
+    );
 
-    res.status(200).json({ result, token });
+    res.status(201).json({ result, token });
   } catch (error) {
     res.status(500).json({ message: 'Something went wrong.' });
   }

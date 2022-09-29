@@ -12,7 +12,7 @@ const auth = async (req, res, next) => {
 
     // if token is custom auth
     if (token && !isGoogleAuth) {
-      decodedData = jwt.verify(token, 'secret');
+      decodedData = jwt.verify(token, process.env.JWT_SECRET);
       req.userId = decodedData?.id;
     } else {
       // if google auth

@@ -22,7 +22,7 @@ const Ideas = ({ setCurrentId }) => {
       spacing={3}
     >
       {ideas.map((idea) => (
-        <Grid key={idea._id} item xs={12} sm={6}>
+        <Grid key={idea._id} item xs={12} sm={6} md={3}>
           <Idea idea={idea} setCurrentId={setCurrentId} />
         </Grid>
       ))}

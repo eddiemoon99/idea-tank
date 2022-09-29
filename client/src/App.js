@@ -11,7 +11,7 @@ const App = () => {
   return (
     <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENTID}>
       <BrowserRouter>
-        <Container maxwidth='lg'>
+        <Container>
           <Nav />
           <Routes>
             <Route path='/' element={<Home />} />

@@ -19,17 +19,15 @@ const Home = () => {
       <Container>
         <Grid
           container
-          justify='space-between'
-          alignItems='stretch'
-          spacing={3}
+          justifyContent='center'
+          alignItems='center'
+          marginBottom={3}
         >
-          <Grid sx={{ marginRight: '50px !important' }} item xs={12} sm={4}>
+          <Grid item xs={12} sm={4.5}>
             <Form currentId={currentId} setCurrentId={setCurrentId} />
           </Grid>
-          <Grid item xs={12} sm={7}>
-            <Ideas setCurrentId={setCurrentId} />
-          </Grid>
         </Grid>
+        <Ideas setCurrentId={setCurrentId} />
       </Container>
     </Grow>
   );
