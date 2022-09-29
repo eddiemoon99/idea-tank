@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 
 import ideaRoutes from './routes/ideas.js';
 import userRoutes from './routes/user.js';
+
 // create server
 const app = express();
 

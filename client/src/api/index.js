@@ -13,6 +13,7 @@ API.interceptors.request.use((req) => {
   return req;
 });
 // routes
+// ideas
 export const fetchIdeas = () => API.get('/ideas');
 export const createIdea = (newIdea) => API.post('/ideas', newIdea);
 export const updateIdea = (id, updatedIdea) =>
@@ -21,5 +22,6 @@ export const deleteIdea = (id) => API.delete(`/ideas/${id}`);
 export const upvoteIdea = (id) => API.patch(`/ideas/${id}/upvoteIdea`);
 export const downvoteIdea = (id) => API.patch(`/ideas/${id}/downvoteIdea`);
 
+// auth
 export const signIn = (inputs) => API.post('/user/signIn', inputs);
 export const signUp = (inputs) => API.post('/user/signUp', inputs);

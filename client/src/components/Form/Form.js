@@ -8,12 +8,13 @@ import {
   Paper,
 } from '@mui/material';
 import FileBase from 'react-file-base64';
+import { useDispatch, useSelector } from 'react-redux';
+import EjectIcon from '@mui/icons-material/Eject';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 import useStyles from './styles';
-import { useDispatch, useSelector } from 'react-redux';
 import { createIdea, updateIdea } from '../../actions/ideas';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import EjectIcon from '@mui/icons-material/Eject';
+
 const Form = ({ currentId, setCurrentId }) => {
   const [ideaData, setIdeaData] = useState({
     title: '',
@@ -31,7 +32,6 @@ const Form = ({ currentId, setCurrentId }) => {
 
   const location = useLocation();
   const classes = useStyles();
-
   const dispatch = useDispatch();
 
   // set form with current idea if exists

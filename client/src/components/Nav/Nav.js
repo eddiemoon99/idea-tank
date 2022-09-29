@@ -18,6 +18,7 @@ const Nav = () => {
   useEffect(() => {
     const token = user?.token;
 
+    // handle logout timeout
     if (token) {
       const decodedToken = decode(token);
 

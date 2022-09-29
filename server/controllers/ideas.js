@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+
 import Idea from '../models/idea.js';
 
 export const getIdeas = async (req, res) => {

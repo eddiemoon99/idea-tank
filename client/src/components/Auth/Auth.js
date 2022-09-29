@@ -12,6 +12,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+
 import Input from './Input';
 import useStyles from './styles';
 import { signIn, signUp } from '../../actions/auth';
@@ -28,6 +29,7 @@ const Auth = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const [inputs, setInputs] = useState(defaultInputs);
+
   const classes = useStyles();
   const navigate = useNavigate();
   const dispatch = useDispatch();
