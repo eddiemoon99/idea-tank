@@ -8,30 +8,51 @@ import {
   Container,
 } from '@mui/material';
 import jwt_decode from 'jwt-decode';
-import { GoogleLogin } from '@react-oauth/google';
+import { useGoogleLogin } from '@react-oauth/google';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
+import googleIcon from '../../images/googleIcon.svg';
 import Input from './Input';
 import useStyles from './styles';
+import { signIn, signUp } from '../../actions/auth';
+
+const defaultInputs = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
+};
 
 const Auth = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [isSignup, setIsSignup] = useState(false);
-
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [inputs, setInputs] = useState(defaultInputs);
   const classes = useStyles();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleSubmit = () => {};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('form Data: ', inputs);
 
-  const handleChange = () => {};
+    if (isSignUp) {
+      dispatch(signUp(inputs, navigate));
+    } else {
+      dispatch(signIn(inputs, navigate));
+    }
+  };
+
+  const handleChange = (e) => {
+    setInputs({ ...inputs, [e.target.name]: e.target.value });
+  };
 
   const handleShowPassword = () => setShowPassword((prev) => !prev);
 
   const handleSwitch = () => {
-    setIsSignup((prev) => !prev);
+    setIsSignUp((prev) => !prev);
     setShowPassword(false);
   };
 
@@ -52,16 +73,21 @@ const Auth = () => {
     console.log(error);
   };
 
+  const login = useGoogleLogin({
+    onSuccess: googleSuccess,
+    onError: googleError,
+  });
+
   return (
     <Container component='main' maxWidth='xs'>
       <Paper className={classes.paper} elevation={3}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography variant='h5'>{isSignup ? 'Sign Up' : 'Sign In'}</Typography>
+        <Typography variant='h5'>{isSignUp ? 'Sign Up' : 'Sign In'}</Typography>
         <form className={classes.form} onSubmit={handleSubmit}>
           <Grid container spacing={2}>
-            {isSignup && (
+            {isSignUp && (
               <>
                 <Input
                   name='firstName'
@@ -91,7 +117,7 @@ const Auth = () => {
               type={showPassword ? 'text' : 'password'}
               handleShowPassword={handleShowPassword}
             />
-            {isSignup && (
+            {isSignUp && (
               <Input
                 name='confirmPassword'
                 label='Confirm Password'
@@ -108,23 +134,40 @@ const Auth = () => {
             color='primary'
             className={classes.submit}
           >
-            {isSignup ? 'Sign Up' : 'Sign In'}
+            {isSignUp ? 'Sign Up' : 'Sign In'}
           </Button>
           <Grid
             container
             sx={{
               justifyContent: 'center',
-              marginTop: '1em',
               marginBottom: '1em',
               width: '100%',
             }}
           >
-            <GoogleLogin onSuccess={googleSuccess} onError={googleError} />
+            <Button
+              variant='contained'
+              sx={{
+                backgroundColor: '#8D99AE',
+                fontSize: 12,
+                color: 'white',
+              }}
+              onClick={() => login()}
+              fullWidth
+            >
+              <img
+                src={googleIcon}
+                alt='google icon'
+                height='auto'
+                width='10%'
+                style={{ marginRight: 5 }}
+              />
+              Google
+            </Button>
           </Grid>
           <Grid container sx={{ justifyContent: 'flex-end' }}>
             <Grid item>
               <Button onClick={handleSwitch} color='secondary'>
-                {isSignup
+                {isSignUp
                   ? 'Already have an account?'
                   : "Don't have an account? Sign up here"}
               </Button>

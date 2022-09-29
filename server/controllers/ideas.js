@@ -55,17 +55,36 @@ export const deleteIdea = async (req, res) => {
 export const upvoteIdea = async (req, res) => {
   const { id: _id } = req.params;
 
+  // if user is not authenticated
+  if (!req.userId) {
+    return res.json({ message: 'User is not authenticated' });
+  }
   // check idea is valid first
   if (!mongoose.Types.ObjectId.isValid(_id))
     return res.status(404).send('No idea with the id exists');
 
   const idea = await Idea.findById(_id);
 
-  const updatedIdea = await Idea.findByIdAndUpdate(
-    _id,
-    { upvoteCount: idea.upvoteCount + 1 },
-    { new: true }
-  );
+  // check if user already upvoted
+  const indexUp = idea.upvotes.findIndex((id) => id === String(req.userId));
+
+  // check if user already downvoted
+  const indexDown = idea.downvotes.findIndex((id) => id === String(req.userId));
+
+  // logic handling for upvote
+  if (indexUp !== -1) {
+    idea.upvotes = idea.upvotes.filter((id) => id !== String(req.userId));
+    idea.upvoteCount -= 1;
+  } else if (indexDown !== -1) {
+    idea.downvotes = idea.downvotes.filter((id) => id !== String(req.userId));
+    idea.upvotes.push(req.userId);
+    idea.upvoteCount += 2;
+  } else {
+    idea.upvotes.push(req.userId);
+    idea.upvoteCount += 1;
+  }
+
+  const updatedIdea = await Idea.findByIdAndUpdate(_id, idea, { new: true });
 
   res.json(updatedIdea);
 };
@@ -73,17 +92,37 @@ export const upvoteIdea = async (req, res) => {
 export const downvoteIdea = async (req, res) => {
   const { id: _id } = req.params;
 
+  // check user is authenticated
+  if (!req.userId) {
+    return res.json({ message: 'User is not authenticated.' });
+  }
+
   // check idea is valid first
   if (!mongoose.Types.ObjectId.isValid(_id))
     return res.status(404).send('No idea with the id exists');
 
   const idea = await Idea.findById(_id);
 
-  const updatedIdea = await Idea.findByIdAndUpdate(
-    _id,
-    { upvoteCount: idea.upvoteCount - 1 },
-    { new: true }
-  );
+  // check if user already upvoted
+  const indexUp = idea.upvotes.findIndex((id) => id === String(req.userId));
+
+  // check if user already downvoted
+  const indexDown = idea.downvotes.findIndex((id) => id === String(req.userId));
+
+  // logic handling for downvote
+  if (indexDown !== -1) {
+    idea.downvotes = idea.downvotes.filter((id) => id !== String(req.userId));
+    idea.upvoteCount += 1;
+  } else if (indexUp !== -1) {
+    idea.upvotes = idea.upvotes.filter((id) => id !== String(req.userId));
+    idea.downvotes.push(req.userId);
+    idea.upvoteCount -= 2;
+  } else {
+    idea.downvotes.push(req.userId);
+    idea.upvoteCount -= 1;
+  }
+
+  const updatedIdea = await Idea.findByIdAndUpdate(_id, idea, { new: true });
 
   res.json(updatedIdea);
 };

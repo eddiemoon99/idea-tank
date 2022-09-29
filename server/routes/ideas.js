@@ -1,4 +1,5 @@
 import express from 'express';
+
 import {
   getIdeas,
   createIdea,
@@ -7,15 +8,16 @@ import {
   upvoteIdea,
   downvoteIdea,
 } from '../controllers/ideas.js';
+import auth from '../middleware/auth.js';
 
 const router = express.Router();
 
 // routes
 router.get('/', getIdeas);
-router.post('/', createIdea);
-router.patch('/:id', updateIdea);
-router.delete('/:id', deleteIdea);
-router.patch('/:id/upvoteIdea', upvoteIdea);
-router.patch('/:id/downvoteIdea', downvoteIdea);
+router.post('/', auth, createIdea);
+router.patch('/:id', auth, updateIdea);
+router.delete('/:id', auth, deleteIdea);
+router.patch('/:id/upvoteIdea', auth, upvoteIdea);
+router.patch('/:id/downvoteIdea', auth, downvoteIdea);
 
 export default router;

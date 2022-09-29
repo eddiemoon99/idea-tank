@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Avatar, AppBar, Typography, Button } from '@mui/material';
+import { useDispatch } from 'react-redux';
 
 import useStyles from './styles';
 import lightbulb from '../../images/lightbulb.svg';
@@ -8,14 +9,24 @@ import lightbulb from '../../images/lightbulb.svg';
 const Nav = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
 
+  const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const classes = useStyles();
+
   useEffect(() => {
     const token = user?.token;
 
     // JWT
 
     setUser(JSON.parse(localStorage.getItem('profile')));
-  }, []);
-  const classes = useStyles();
+  }, [location]);
+
+  const handleLogout = () => {
+    dispatch({ type: 'LOGOUT' });
+    navigate('/');
+    setUser(null);
+  };
   return (
     <AppBar className={classes.appHeader} position='static'>
       <Link to='/' style={{ marginRight: -120 }}>
@@ -46,7 +57,12 @@ const Nav = () => {
             >
               {user.result.given_name.charAt(0)}
             </Avatar>
-            <Button sx={{ height: 25 }} variant='contained' color='secondary'>
+            <Button
+              onClick={handleLogout}
+              sx={{ height: 25 }}
+              variant='contained'
+              color='secondary'
+            >
               Log out
             </Button>
           </div>

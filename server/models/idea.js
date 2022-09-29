@@ -6,6 +6,14 @@ const ideaSchema = mongoose.Schema({
   inventor: String,
   tags: [String],
   selectedFile: String,
+  upvotes: {
+    type: [String],
+    default: [],
+  },
+  downvotes: {
+    type: [String],
+    default: [],
+  },
   upvoteCount: {
     type: Number,
     default: 0,

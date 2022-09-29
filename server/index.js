@@ -2,9 +2,10 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import cors from 'cors';
-import router from './routes/ideas.js';
 import dotenv from 'dotenv';
 
+import ideaRoutes from './routes/ideas.js';
+import userRoutes from './routes/user.js';
 // create server
 const app = express();
 
@@ -16,7 +17,9 @@ app.use(bodyParser.json({ limit: '30mb', extended: true }));
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
 app.use(cors());
 
-app.use('/ideas', router);
+// routes
+app.use('/ideas', ideaRoutes);
+app.use('/user', userRoutes);
 
 const PORT = process.env.PORT;
 
