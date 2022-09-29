@@ -13,7 +13,6 @@ export const getIdeas = async (req, res) => {
 
 export const createIdea = async (req, res) => {
   const idea = req.body;
-  console.log('req.body: ', req.body);
   const newIdea = new Idea({
     ...idea,
     inventor: req.userId,

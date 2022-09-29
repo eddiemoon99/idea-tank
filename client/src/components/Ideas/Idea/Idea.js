@@ -29,8 +29,6 @@ const Idea = ({ idea, setCurrentId }) => {
     setUser(JSON.parse(localStorage.getItem('profile')));
   }, [location]);
 
-  console.log('user: !', user);
-
   return (
     <Card className={classes.card}>
       <CardMedia
