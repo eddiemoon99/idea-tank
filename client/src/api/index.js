@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // create axios instance
-const API = axios.create({ baseURL: 'http://localhost:5000' });
+const API = axios.create({ baseURL: 'https://idea-tank.herokuapp.com/' });
 
 // middleware send auth user to backend
 API.interceptors.request.use((req) => {
