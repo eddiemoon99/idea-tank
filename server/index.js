@@ -22,6 +22,10 @@ app.use(cors());
 app.use('/ideas', ideaRoutes);
 app.use('/user', userRoutes);
 
+app.get('/', (req, res) => {
+  res.send('Idea Tank application is running.');
+});
+
 const PORT = process.env.PORT;
 
 // connect mongoose
