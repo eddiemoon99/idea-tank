@@ -53,6 +53,7 @@ const Auth = () => {
   const handleSwitch = () => {
     setIsSignUp((prev) => !prev);
     setShowPassword(false);
+    setInputs(defaultInputs);
   };
 
   const googleSuccess = async (res) => {
@@ -86,6 +87,7 @@ const Auth = () => {
               <>
                 <Input
                   name='firstName'
+                  value={inputs.firstName}
                   label='First Name'
                   handleChange={handleChange}
                   autoFocus
@@ -93,6 +95,7 @@ const Auth = () => {
                 />
                 <Input
                   name='lastName'
+                  value={inputs.lastName}
                   label='Last Name'
                   handleChange={handleChange}
                   half
@@ -101,12 +104,14 @@ const Auth = () => {
             )}
             <Input
               name='email'
+              value={inputs.email}
               label='Email Address'
               handleChange={handleChange}
               type='email'
             />
             <Input
               name='password'
+              value={inputs.password}
               label='Password'
               handleChange={handleChange}
               type={showPassword ? 'text' : 'password'}
@@ -115,6 +120,7 @@ const Auth = () => {
             {isSignUp && (
               <Input
                 name='confirmPassword'
+                value={inputs.confirmPassword}
                 label='Confirm Password'
                 handleChange={handleChange}
                 type={showPassword ? 'text' : 'password'}
