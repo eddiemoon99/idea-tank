@@ -13,5 +13,5 @@ This application was created using the following:
 Features include signup/login, full CRUD operations of ideas, social interactions such as upvoting/downvoting.
 
 Deployed using:
-*Heroku
-*Netlify
+* Heroku
+* Netlify
