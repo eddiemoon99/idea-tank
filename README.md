@@ -15,3 +15,6 @@ Features include signup/login, full CRUD operations of ideas, social interaction
 Deployed using:
 * Heroku
 * Netlify
+
+See the app on:
+https://ideatank.netlify.app/
